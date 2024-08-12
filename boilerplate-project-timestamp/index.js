@@ -24,6 +24,25 @@ app.get("/api/", (req, res) => {
   res.json({unix: dateNow, utc: new Date(dateNow).toUTCString()});
 });
 
+app.get("/api/:date", (req, res) => {
+  const {date} = req.params;
+  // check if 'date' contains 5 or more digits and convert to integer
+  if(/\d{5,}/.test(date)){
+    const dateInt = parseInt(date);
+    // console.log({unix: dateInt, utc: new Date(dateInt).toUTCString()});
+    res.json({unix: dateInt, utc: new Date(dateInt).toUTCString()});
+  } else{
+    const parsedDate = new Date(date);
+    if(parsedDate.toString() === 'Invalid Date') {
+      // console.log({error: "invalid date"});
+      res.json({error: "Invalid Date"});
+    }
+    else{
+      // console.log({"unix": parsedDate.valueOf(), "utc" : parsedDate.toUTCString()});
+    res.json({unix: parsedDate.valueOf(), utc: parsedDate.toUTCString()});
+    }
+  }
+});
 
 
 
